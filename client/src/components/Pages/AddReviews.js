@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import "./styles/Signin.css";
-import { useHistory,useParams } from "react-router-dom";
-import Swale from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import { useHistory, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const initialState = {
   review: "",
 };
+
 const AddReviews = () => {
-  const Swal = withReactContent(Swale);
   const [state, setState] = useState(initialState);
   const { review } = state;
-  const {id}=useParams();
+  const { id } = useParams();
   const history = useHistory();
 
   const handleInputChange = (event) => {
@@ -19,23 +19,30 @@ const AddReviews = () => {
     setState({ ...state, [name]: value });
   };
 
-  const Add = (event) => {
+  const addReview = (event) => {
     event.preventDefault();
     Axios.post(`http://localhost:5000/addreview/${id}`, {
-      id:id,
-      review:review,
-    }).then((response) => {
-      if (response.data.msg) {
-        Swal.fire("Invalid Login!", "", "error");
-      } else {
-        Swal.fire("Review Added!", "", "success");
-        setTimeout(() => history.push(`/CustomerPanel/${id}`), 500);
-      }
-    });
+      id: id,
+      review: review,
+    })
+      .then((response) => {
+        if (response.data.msg) {
+          toast.error("Invalid Login!");
+        } else {
+          toast.success("Review Added Successfully");
+          setState(initialState);
+          history.push("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Review Added Successfully", error);
+        toast.error("Review Added Successfully");
+      });
   };
+
   return (
     <div className="Auth-form-container bg-image">
-      <form className="Auth-form" onSubmit={Add}>
+      <form className="Auth-form" onSubmit={addReview}>
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">Add Review</h3>
           <div className="form-group mt-3">
@@ -65,7 +72,6 @@ const AddReviews = () => {
               Submit Review
             </button>
           </div>
-          
         </div>
       </form>
     </div>

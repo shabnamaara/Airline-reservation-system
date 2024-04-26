@@ -1,0 +1,15 @@
+.booking-form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Set the desired height */
+  }
+  
+  .booking-form {
+    text-align: center;
+    width: 300px; /* Set the desired width */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  

@@ -4,6 +4,7 @@ import Sidebar from './Sidebar'
 import { NavBtn, NavBtnLink } from "../Navbar/NavbarElements";
 import MovingText from "react-moving-text";
 import './styles/AdminPanel.css';
+
 const AdminPanel = () => {
   const [user,setUser]=useState({});
   useEffect(() => {
@@ -16,7 +17,11 @@ const AdminPanel = () => {
   return (
     <div className='bg-image'>
       <Sidebar/>
-
+      <div class="left">
+        <NavBtn>
+          <NavBtnLink to="/">Logout</NavBtnLink>
+        </NavBtn>
+      </div>
       <br/>
       <br/>
       <br/>
@@ -30,17 +35,10 @@ const AdminPanel = () => {
         iteration="5"
         fillMode="none"
         >
-        <h1 style={{textAlign:"center", fontSize:"80px", fontWeight:'800', color:'white',backgroundColor:'black',width:'100vw',padding:'10px'}}>Welcome, cynotryl!</h1>
+        <h1 style={{textAlign:"center", fontSize:"80px", fontWeight:'800', color:'white',backgroundColor:'black',width:'100vw',padding:'10px'}}>Welcome, Team YAG</h1>
       </MovingText>
       <br/>
       <br/>
-      <div style={{backgroundColor:'black', width:'100vw', padding:'10px'}}>
-        <h1 style={{color:'white'}}>Bookings Count: {user.countt}</h1>
-        <h1 style={{color:'white'}}>Revenue Generated: {user.summ}</h1>
-      </div>
-      <NavBtn >
-          <NavBtnLink to="/">Logout</NavBtnLink>
-        </NavBtn>
     </div>
   )
 }

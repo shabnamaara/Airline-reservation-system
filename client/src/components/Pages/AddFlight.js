@@ -1,44 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
-import "./styles/AddEdit.css";
+import React, { useState } from "react";
+import { useHistory, Link } from "react-router-dom";
 import Axios from "axios";
 import { toast } from "react-toastify";
+
 const initialState = {
   flight_no: "",
   schedule_id: "",
   flightStatus_id: "",
   airplane_id: "",
 };
+
 const AddFlight = () => {
   const [state, setState] = useState(initialState);
   const { flight_no, schedule_id, flightStatus_id, airplane_id } = state;
-
   const history = useHistory();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!flight_no || !schedule_id || !flightStatus_id || !airplane_id)
-      toast.error("Required Fields are empty");
-    else {
-      Axios.post("http://localhost:5000/flight/api/post", {
+
+    // Simple form validation
+    if (!flight_no || !schedule_id || !flightStatus_id || !airplane_id) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    try {
+      // Make a request to add the flight
+      const response = await Axios.post("http://localhost:8080/addflight", {
         flight_no,
         schedule_id,
         flightStatus_id,
         airplane_id,
-      })
-        .then((response) => {
-          setState({
-            flight_no: "",
-            schedule_id: "",
-            flightStatus_id: "",
-            airplane_id: "",
-          });
-          if (response.data.err) console.log(response.data.err);
-        })
-        .catch((err) => toast.error(err.response.data));
-      toast.success("Flight Added Successfully");
+      });
 
-      setTimeout(() => history.push("/Flight"), 500);
+      // Check the response for errors
+      if (response.data.err) {
+        toast.error(response.data.err);
+      } else {
+        // Flight added successfully
+        toast.success("Flight Added Successfully");
+        setState(initialState);
+        setTimeout(() => history.push("/Flight"), 500);
+      }
+    } catch (error) {
+      // Handle server errors
+      console.error("Error during flight addition:", error);
+      toast.error("Error during flight addition");
     }
   };
 
@@ -46,6 +53,7 @@ const AddFlight = () => {
     const { name, value } = event.target;
     setState({ ...state, [name]: value });
   };
+
   return (
     <div style={{ marginTop: "100px" }}>
       <form
@@ -95,9 +103,10 @@ const AddFlight = () => {
           placeholder="Airplane ID"
           onChange={handleInputChange}
         />
+
         <input type="submit" value="Add" />
         <Link to="/Flight">
-          <input type="button" value="Back"></input>
+          <input type="button" value="Back" />
         </Link>
       </form>
     </div>

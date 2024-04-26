@@ -43,6 +43,13 @@ import Invoice from "./components/Pages/Invoice";
 import AddReviews from "./components/Pages/AddReviews";
 import ViewCustomerTickets from "./components/Pages/ViewCustomerTickets";
 import Booking from "./components/Pages/Booking";
+import Homepage from './components/Pages/Homepage';
+import Logout from './components/Pages/Logout';
+import Welcome from './components/Pages/Welcome';
+import BookingForm from './components/Pages/BookingForm';
+import Successs from './components/Pages/Successs';
+import CreditCard from './components/Pages/CreditCard';
+import UPI from "./components/Pages/UPI";
 function App() {
   return (
     <BrowserRouter>
@@ -50,6 +57,7 @@ function App() {
         <Switch>
           <Route path='/signin' component={Signin}/>
           <Route path='/sign-up' component={Signup}/>
+          <Route path='/homepage' element={<Homepage/>}exact/>
           <Route path='/Client' component={Client}/>
           <Route path='/AvailableFlights/:id' component={AvailableFlights}/>
           <Route path='/AdminPanel' component={AdminPanel}/>
@@ -79,7 +87,6 @@ function App() {
           <Route path='/EditTicket' component={EditTicket}/>
           <Route path='/ViewTicket/:id' component={ViewTicket}/>
           <Route path='/CustomerSignin' component={CustomerSignin}/>
-          <Route path='/CustomerPanel/:id' component={CustomerPanel}/>
           <Route path='/ViewProfile/:id' component={ViewProfile}/>
           <Route path='/CustomerPanel/:id' component={CustomerPanel}/>
           <Route path='/BookTicket/:id' component={BookTicket}/>
@@ -87,13 +94,17 @@ function App() {
           <Route path='/Invoice/:id' component={Invoice}/>
           <Route path='/AddReviews/:id' component={AddReviews}/>
           <Route path='/ViewCustomerTickets/:id' component={ViewCustomerTickets}/>
-          <Route path='/Booking' component={Booking}/>
+          <Route path='/BookingForm' component={BookingForm}/>
+          <Route path='/Welcome' component={Welcome}/>
+          <Route path='/Successs' component={Successs}/>
+          <Route path='/UPI' component={UPI}/>
           <>
           <Navbar/>
           <Route exact path='/' component={Home}/>
           <Route path='/BookTicket' component={BookTicket}/>
           <Route path='/about' component={About}/>
           <Route path='/contact-us' component={Contact}/>
+          <Route path='/logout' component={Logout}/>
           </>
         </Switch>
     </BrowserRouter>

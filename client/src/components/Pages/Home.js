@@ -21,7 +21,7 @@ const Home = () => {
                 <h5 className="card-title">
                   <strong style={{ fontSize: "25px" }}>
                     <br/>Discover the destinations you can
-                    <br /> travel with FAST Airways
+                    <br /> travel with INDIAN Airways
                   </strong>
                 </h5>
               </div>
@@ -79,12 +79,12 @@ const Home = () => {
         <div className="col-lg-6 align-items-center d-flex justify-content-center">
           <div
             className=" text-center"
-            style={{ width: "35rem" }}
+            style={{ width: "25rem" }}
           >
-            <h1>Exceptional experiences with FAST Airways</h1>
+            <h1>Exceptional experiences with INDIAN Airways</h1>
             <h5>
               Explore the world, earn rewards and live the best adventures with
-              FAST Airways.{" "}
+              INDIAN Airways.{" "}
             </h5>
             <br></br>
             {/* <a href="contact.php"><button type="button" className="btn btn-primary">Contact us</button></a> */}
@@ -135,7 +135,7 @@ const Home = () => {
                   <div className="col-lg-6">
                     <div className="card-body">
                       <h5 className="card-title">
-                        <strong>Time flies on board FAST Airways</strong>
+                        <strong>Time flies on board INDIAN Airways</strong>
                       </h5>
                       <p className="card-text">
                         Sit back, relax and enjoy your flight with our onboard
@@ -182,33 +182,37 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <header style={{ paddingLeft: 0,marginLeft:'25%',marginTop:'5%' }}>
-        <div
-          className="p-5 text-center bg-image"
-          style={{
-            backgroundImage:
-              "url('https://mdbootstrap.com/img/new/slides/041.webp')",
-            height: 600,
-            width: 1300,
-          }}
-        >
-          <div
-            className="mask"
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
+      <header style={{ paddingLeft: 0, marginTop: '5%', textAlign: 'left' }}>
+  <div
+    className="p-5 text-center bg-image"
+    style={{
+      backgroundImage:
+        "url('https://mdbootstrap.com/img/new/slides/041.webp')",
+      height: 600,
+      width: 1300,
+    }}
+  >
+    <div
+      className="mask"
+      style={{ backgroundColor: "rgba(0.2, 0, 0, 0.6)" }}
+    >
+      <div className="d-flex justify-content-center align-items-center h-100">
+        <div className="text-white">
+          <h1 className="mb-3" style={{ fontWeight: '500', marginTop: '20px' }}>
+            Start your journey with INDIAN Airways
+          </h1>
+          <h4 className="mb-3" style={{ fontSize: '20px' }}>
+            Exclusive offers and amazing rewards await for premium membership holders
+          </h4>
+          <a
+            className="btn btn-outline-light btn-lg"
+            href="#!"
+            role="button" style={{ backgroundColor: 'grey', fontSize: '20px', marginBottom: '20px' }}
           >
-            <div className="d-flex justify-content-center align-items-center h-100">
-              <div className="text-white">
-                <h1 className="mb-3" style={{fontWeight:'800',marginTop:'20px'}}>Start your journey with FAST Airways</h1>
-                <h4 className="mb-3" style={{fontSize:'20px'}}>Exclusive offers, special offers and amazing rewards await for premium membership holders</h4>
-                <a
-                  className="btn btn-outline-light btn-lg"
-                  href="#!"
-                  role="button" style={{backgroundColor:'grey', fontSize:'20px',marginBottom:'20px'}}
-                >
-                  Join Now
-                </a>
-              </div>
-            </div>
+            Join Now
+          </a>
+        </div>
+      </div>
           </div>
         </div>
       </header>

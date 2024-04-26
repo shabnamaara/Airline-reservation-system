@@ -5,6 +5,7 @@ import {useState,useEffect} from 'react';
 import Axios from 'axios';
 import "./styles/About.css";
 
+
 const About = () => {
   const [data, setData] = useState({});
   const [data1, setData1] = useState({});
@@ -55,8 +56,8 @@ const About = () => {
           <div className="col-lg-6 align-items-center d-flex justify-content-center">
             <img
               src={require("../../images/airhostess.jpg")}
-              width="950" style={{borderRadius:'20px'}}
-              height="650"
+              width="750" style={{borderRadius:'20px'}}
+              height="550"
             />
           </div>
 
@@ -74,8 +75,8 @@ const About = () => {
               <div className="col-lg-1">
                 <img
                   src={require("../../images/nc1.png")}
-                  height="80px"
-                  width="70px"
+                  height="70px"
+                  width="60px"
                 />
               </div>
               <div className="col-lg-6">
@@ -128,7 +129,7 @@ const About = () => {
           <div className="col-lg-6 align-items-center d-flex justify-content-center ">
             <img
               src={require("../../images/about1.jpg")}
-              width="1200px"
+              width="900px"
               style={{ borderRadius: "20px" }}
             />
           </div>
@@ -152,7 +153,7 @@ const About = () => {
           </div>
         </div>
 
-        <Carousel style={{height:'200px'}}>
+        <Carousel style={{height:'70px'}}>
           <Carousel.Item interval={1000}>
             <p className="align-items-center d-flex justify-content-center" style={{fontSize:'25px'}}>
             {data.fname}{" "}{data.lname}{": "}{data.review}
@@ -219,7 +220,7 @@ const About = () => {
       </section>
 
       
-      
+
     </div>
   );
 };

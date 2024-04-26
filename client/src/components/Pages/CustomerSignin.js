@@ -4,6 +4,7 @@ import "./styles/Signin.css";
 import { useHistory, Link } from "react-router-dom";
 import Swale from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+
 const initialState = {
   emailLogin: "",
   passwordLogin: "",
@@ -41,7 +42,7 @@ const Signin = () => {
         Swal.fire("Invalid Login!", "", "error");
       } else {
         Swal.fire("Login Success!", "", "success");
-        setTimeout(()=>history.push(`/CustomerPanel/${initial.id}`),500)
+        history.push("/homepage");
       }
     });
   };
@@ -72,7 +73,9 @@ const Signin = () => {
           </div>
           <div className="d-grid gap-2 mt-3">
             <button type="submit" className="btn btn-primary">
-              Submit
+              Submit <Link to="/Welcome">
+              <a href="">h</a>
+            </Link>
             </button>
           </div>
           <p className="forgot-password text-right mt-2">

@@ -1,95 +1,158 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import Axios from "axios";
-import "./styles/Tables.css";
-const initialState={
-  fb_id:"",
-  departure:"",
-  arrival:"",
-  departureDate:"",
-  returnDate:"",
-  class:"",
-  price:"",
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import Footer from "./Footer";
+
+function createData(
+  flightId,
+  maxSeats,
+  flightName,
+  departure,
+  arrival,
+  timeOfTravel,
+  price
+) {
+  return {
+    flightId,
+    maxSeats,
+    flightName,
+    departure,
+    arrival,
+    timeOfTravel,
+    price,
+  };
 }
-const AvailableFlights = () => {
-  const [data, setData] = useState([]);
 
-  const loadData = async () => {
-    const response = await Axios.get("http://localhost:5000/SearchFlights");
-    initialState.fb_id=response.data[0].fb_id;
-    initialState.departure=response.data[0].departure;
-    initialState.arrival=response.data[0].arrival;
-    initialState.departureDate=response.data[0].departureDate;
-    initialState.returnDate=response.data[0].returnDate;
-    initialState.class=response.data[0].class;
-    initialState.price=response.data[0].price;
-    console.log('fb_id: ' + initialState.fb_id)
+const rows = [
+  createData(1, 150, 'Bharat SPJ12S', 'Banglore', 'Hyderabad', '2024-04-27 12:00:00', 100),
+  createData(2, 200, 'Bharat ECM91K', 'Banglore', 'Hyderabad', '2024-04-27 15:00:00', 120),
+  createData(3, 120, 'Bharat GBH56L', 'Banglore', 'Hyderabad', '2024-04-27 10:30:00', 150),
+  // Add more rows as needed
+];
 
-    console.log('return: ' + initialState.returnDate)
-    const Returnresponse=await Axios.post("http://localhost:5000/AvailableFlights",{
-      departureDate:initialState.departureDate,
-      returnDate:initialState.returnDate,
-      fares:initialState.price,
-    });
-    console.log(Returnresponse.data)
-    setData(Returnresponse.data)
-    
+export default function BasicTable() {
+  const [passengerCount, setPassengerCount] = useState({ adult: 1, child: 0 });
+  const [tripType, setTripType] = useState('oneWay');
+
+  const handlePassengerCountChange = (type, value) => {
+    setPassengerCount((prevCount) => ({ ...prevCount, [type]: value }));
   };
 
+  const handleTripTypeChange = (type) => {
+    setTripType(type);
+  };
 
+  const calculatePrice = (price) => {
+    let totalPrice = price;
+    if (tripType === 'roundTrip') {
+      totalPrice *= 2;
+      totalPrice *= 0.9; // 10% discount
+    }
+    const { adult, child } = passengerCount;
+    totalPrice = totalPrice * adult + (totalPrice * child) / 2;
+    return totalPrice.toFixed(2);
+  };
 
-  useEffect(() => {
-    loadData();
-  }, []);
-  const { id } = useParams();
-
-
-  const voidFunc=()=>{
-
-  }
   return (
-    <div className="bg-pic">
-      <button
-        style={{ width: "120px", marginLeft: "810px", visibility: "hidden" }}
-        className="btn btn-client"
-      ></button>
-      <table className="styled-table">
-        <thead>
-          <tr >
-            <th style={{ textAlign: "center" }}>Airplane ID</th>
-            <th style={{ textAlign: "center" }}>Max Seats</th>
-            <th style={{ textAlign: "center" }}>Departure Time</th>
-            <th style={{ textAlign: "center" }}>Arrival Time</th>
-            <th style={{ textAlign: "center" }}>Flight Status</th>
-            <th style={{ textAlign: "center" }}>Fare</th>
-            <th style={{ textAlign: "center" }}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => {
-            return (
-              <tr style={{backgroundColor:'white'}} key={index}>
-                <td>{item.airplane_id}</td>
-                <td>{item.max_seats}</td>
-                <td>{item.departure_time}</td>
-                <td>{item.arrival_time}</td>
-                <td>{item.status}</td>
-                <td>$ {item.fares}</td>
-                <td>
-                  <Link to={id>0 ? `/Invoice/${item.schedule_id+id}` :  '/CustomerSignin'}>
-                    <button className={id>0 ? "btn btn-book" : "btn btn-login"}  style={{fontSize:'18px'}}>
-                      {id>0 ? "Book" : "Login"}
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div style={{ backgroundColor: '#e6f7ff', minHeight: '100vh', padding: '20px' }}>
+      <h2 style={{ backgroundColor: '#004080', color: 'white', padding: '10px', textAlign: 'center' }}>AVAILABLE FLIGHTS</h2> {/* Header with darker color */}
+      <Box mb={2}>
+        <Typography variant="h6">Select Number of Passengers</Typography>
+        <Box display="flex" alignItems="center" mt={1}>
+          <Typography variant="body1">Adults:</Typography>
+          <IconButton
+            onClick={() =>
+              handlePassengerCountChange('adult', Math.max(passengerCount.adult - 1, 1))
+            }
+          >
+            <RemoveIcon />
+          </IconButton>
+          <Typography variant="body1">{passengerCount.adult}</Typography>
+          <IconButton onClick={() => handlePassengerCountChange('adult', passengerCount.adult + 1)}>
+            <AddIcon />
+          </IconButton>
+        </Box>
+        <Box display="flex" alignItems="center" mt={1}>
+          <Typography variant="body1">Children (below 9):</Typography>
+          <IconButton
+            onClick={() =>
+              handlePassengerCountChange('child', Math.max(passengerCount.child - 1, 0))
+            }
+          >
+            <RemoveIcon />
+          </IconButton>
+          <Typography variant="body1">{passengerCount.child}</Typography>
+          <IconButton onClick={() => handlePassengerCountChange('child', passengerCount.child + 1)}>
+            <AddIcon />
+          </IconButton>
+        </Box>
+      </Box>
+      <Box mb={2}>
+        <Typography variant="h6">Trip Type</Typography>
+        <Button
+          variant={tripType === 'oneWay' ? 'contained' : 'outlined'}
+          onClick={() => handleTripTypeChange('oneWay')}
+          sx={{ mr: 2 }}
+        >
+          One Way
+        </Button>
+        <Button
+          variant={tripType === 'roundTrip' ? 'contained' : 'outlined'}
+          onClick={() => handleTripTypeChange('roundTrip')}
+        >
+          Round Trip
+        </Button>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Flight ID</TableCell>
+              <TableCell align="right">Max Seats</TableCell>
+              <TableCell align="right">Flight Name</TableCell>
+              <TableCell align="right">Departure</TableCell>
+              <TableCell align="right">Arrival</TableCell>
+              <TableCell align="right">Time of Travel</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.flightId}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.flightId}
+                </TableCell>
+                <TableCell align="right">{row.maxSeats}</TableCell>
+                <TableCell align="right">{row.flightName}</TableCell>
+                <TableCell align="right">{row.departure}</TableCell>
+                <TableCell align="right">{row.arrival}</TableCell>
+                <TableCell align="right">{row.timeOfTravel}</TableCell>
+                <TableCell align="right">${calculatePrice(row.price)}</TableCell>
+                <TableCell align="right">
+                  <Link to={`/BookingForm/${row.flightId}`}>Book</Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Footer />
     </div>
   );
-};
-
-export default AvailableFlights;
+}

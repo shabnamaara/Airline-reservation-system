@@ -1,85 +1,103 @@
-import React from 'react'
-import {useState,useEffect} from 'react';
-import {Link} from 'react-router-dom';
-import Axios from 'axios';
-import {toast} from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Sidebar from './Sidebar';
-import './styles/Tables.css'
-const Client = () => {
-  const [data,setData]=useState([]);
-  
-  const loadData =async()=>{
-    const response= await Axios.get('http://localhost:5000/api/get');
-    setData(response.data);
-  }
 
-  useEffect(()=>{
-    loadData();
-  },[]);
+const ClientComponent = () => {
+  const [users, setUsers] = useState([]);
+  const [formData, setFormData] = useState({ name: '', role: '', email: '', password: '' });
 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const delClient=(id)=>{
-    console.log(id)
-    if(window.confirm('Do you really want to delete Client with Client ID '+ id +'?'))
-    {
-      Axios.delete(`http://localhost:5000/api/remove/${id}`);
-      toast.success('Client deleted successfully!');
-      setTimeout(()=> loadData(),500);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/retrive');
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
     }
+  };
 
-  }
-  
+  const handleUpdate = async (id) => {
+    try {
+      await axios.put(`http://localhost:8080/users/${id}`, formData);
+      fetchData();
+    } catch (error) {
+      console.error('Error updating user:', error.message);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/users/${id}`);
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting user:', error.message);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
-    <>
-      <Sidebar/>
-      <div>
-        <Link to='/AddEditClient'>
-          <button className='btn btn-client'>Add Client</button>
-        </Link>
-        <table className='styled-table'>
-          <thead>
+    <div>
+      <Sidebar />
+      <div style={{ backgroundColor: '#ADD8E6', padding: '20px' }}>
+        <h1 style={{ textAlign: 'center', color: 'gray' }}>Users</h1>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead style={{ backgroundColor: 'gray', color: 'white' }}>
             <tr>
-              <th style={{textAlign:'center'}}>S. No</th>
-              <th style={{textAlign:'center'}}>Client ID</th>
-              <th style={{textAlign:'center'}}>First Name</th>
-              <th style={{textAlign:'center'}}>Middle Name</th>
-              <th style={{textAlign:'center'}}>Last Name</th>
-              <th style={{textAlign:'center'}}>Phone</th>
-              <th style={{textAlign:'center'}}>Email</th>
-              <th style={{textAlign:'center'}}>Passport</th>
-              <th style={{textAlign:'center'}}>Action</th>
+              <th style={{ border: '1px solid black', padding: '8px' }}>Name</th>
+              <th style={{ border: '1px solid black', padding: '8px' }}>Role</th>
+              <th style={{ border: '1px solid black', padding: '8px' }}>Email</th>
+              <th style={{ border: '1px solid black', padding: '8px' }}>Password</th>
+              <th style={{ border: '1px solid black', padding: '8px' }}>Actions</th>
             </tr>
-            </thead>
-            <tbody>
-              {data.map((item,index)=>{
-                return(
-                  <tr key={index}>
-                    <th scope='row'>{index+1}</th>
-                    <td>{item.client_id}</td>
-                    <td>{item.fname}</td>
-                    <td>{item.mname}</td>
-                    <td>{item.lname}</td>
-                    <td>{item.phone}</td>
-                    <td>{item.email}</td>
-                    <td>{item.passport}</td>
-                    <td>
-                      <Link to={`/Update/${item.client_id}`}>
-                        <button className='btn btn-edit'>Edit</button>
-                      </Link>
-                        <button className='btn btn-delete' onClick={()=> delClient(item.client_id)}>Delete</button>
-                      <Link to={`/View/${item.client_id}`}>
-                        <button className='btn btn-view'>View</button>
-                      </Link>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td style={{ border: '1px solid black', padding: '8px' }}>{user.name}</td>
+                <td style={{ border: '1px solid black', padding: '8px' }}>{user.role}</td>
+                <td style={{ border: '1px solid black', padding: '8px' }}>{user.email}</td>
+                <td style={{ border: '1px solid black', padding: '8px' }}>{user.password}</td>
+                <td style={{ border: '1px solid black', padding: '8px' }}>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="New Name"
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="text"
+                    name="role"
+                    placeholder="New Role"
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="New Email"
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="New Password"
+                    onChange={handleChange}
+                  />
+                  <button onClick={() => handleUpdate(user._id)}>Update</button>
+                  <button onClick={() => handleDelete(user._id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
-
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default Client
+export default ClientComponent;

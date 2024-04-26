@@ -4,6 +4,7 @@ import { slide as Menu } from 'react-burger-menu';
 import './styles/Sidebar.css'
 const Sidebar=() => {
   return (
+    
     <Menu>
       <Link className="menu-item" to="/AdminPanel">
         Home
@@ -11,34 +12,20 @@ const Sidebar=() => {
       <Link className="menu-item" to="/Client">
         Clients
       </Link>
+      <Link className="menu-item" to="/AddEditClient">
+        ADD Client
+      </Link>
+      <Link className="menu-item" to="/Update/:id">
+        UPDATE Client
+      </Link>
       <Link className="menu-item" to="/Airplane">
         Airplane
       </Link>
-      <Link className="menu-item" to="/FlightStatus">
-        Flight Status
-      </Link>
-      <Link className="menu-item" to="/Gates">
-        Gates
-      </Link>
-      <Link className="menu-item" to="/Airport">
-        Airport
-      </Link>
-      <Link className="menu-item" to="/Reviews">
-        Reviews
-      </Link>
-      <Link className="menu-item" to="/Schedule">
-        Schedule
-      </Link>
-      <Link className="menu-item" to="/Flight">
-        Flight
-      </Link>
-      <Link className="menu-item" to="/Ticket">
-        Ticket
-      </Link>
-      <Link className="menu-item" to="/Booking">
-        Booking
+      <Link className="menu-item" to="/">
+        Client Home
       </Link>
     </Menu>
+    
   );
 };
 

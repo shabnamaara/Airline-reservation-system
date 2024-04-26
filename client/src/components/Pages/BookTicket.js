@@ -6,6 +6,7 @@ import "./styles/BookTicket.css";
 import { useState, useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import Axios from "axios";
+import Footer from "./Footer";
 
 
 const BookTicket = () => {
@@ -30,7 +31,25 @@ const BookTicket = () => {
   const { id } = useParams();
   // handle submit
   const onSubmit = (data) => {
-    console.log(data.departure);
+    if (data.departure === data.arrival) {
+      setError("arrival", {
+        type: "manual",
+        message: "Departure and arrival cannot be the same",
+      });
+      return;
+    }
+  
+    const departureDate = new Date(data.departureDate);
+    const returnDate = new Date(data.returnDate);
+  
+    if (departureDate.toDateString() === returnDate.toDateString()) {
+      setError("returnDate", {
+        type: "manual",
+        message: "Return date must be different from departure date",
+      });
+      return;
+    }
+  
     Axios.post("http://localhost:5000/BookTicket", {
       departure: data.departure,
       arrival: data.arrival,
@@ -41,9 +60,11 @@ const BookTicket = () => {
     }).then((response) => {
       if (response.data.err) console.log(response.data.err);
     });
-    // .catch((err) => toast.error(err.response.data));
+  
     setTimeout(() => history.push(`/AvailableFlights/${id}`), 100);
   };
+  
+  
   return (
     <div className="bg-img">
 
@@ -71,6 +92,12 @@ const BookTicket = () => {
                       <option value="" selected disabled hidden>
                         --Select Airport--
                       </option>
+                      <option>Chennai</option>
+                        <option>Guwahati</option>
+                        <option>Shirdi</option>
+                        <option>Vizag</option>
+                        <option>Banglore</option>
+                        <option>Vijayawada</option>
                       {data.map((item, index) => {
                         return (
                           <>
@@ -116,12 +143,18 @@ const BookTicket = () => {
                         return (
                           <>
                             <option value={item.airport_name}>
-                              {" "}
+                              {""}
                               {item.airport_name}
                             </option>
                           </>
                         );
                       })}
+                       <option>Chennai</option>
+                        <option>Guwahati</option>
+                        <option>Shirdi</option>
+                        <option>Vizag</option>
+                        <option>Banglore</option>
+                        <option>Vijayawada</option>
                     </select>
                     <FaPlaneArrival className="text-4xl absolute left-5 top-10 " />
                   </div>
@@ -256,6 +289,7 @@ const BookTicket = () => {
             </div>
           </div>
       </form>
+      <Footer />
     </div>
   );
 };
